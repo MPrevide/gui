@@ -87,11 +87,11 @@ Scenario('Creating a template', async (I, Template) => {
         '-22.826702502573774, -47.044628078647314',
     );
 
-    /*    Template.addAttr(
+/*    Template.addAttr(
         'attrStringActuator',
         Template.AttributeType.actuator,
-        Template.AttributeValueType.string
-    ); */
+        Template.AttributeValueType.string,
+    );*/
 
     Template.updateAttr(
         'attrGPSStatic',
@@ -169,11 +169,11 @@ Scenario('Checking create template', async (I, Template) => {
         '-23.826702502573774, -48.044628078647314',
     );
 
-    /*    Template.seeAttr(
+/*    Template.seeAttr(
         'attrStringActuator',
         Template.AttributeType.actuator,
         Template.AttributeValueType.string,
-    ); */
+    );*/
 
     Template.seeManageFirmware();
     Template.clickDiscard();
@@ -205,10 +205,6 @@ Scenario('Updating a template', async (I, Template) => {
 
     Template.updateConfigTemplate(
         Template.ConfigurationType.protocol,
-        Template.ConfigurationType.topic,
-        'topic',
-    );
-    Template.addConfigTemplate(
         Template.ConfigurationType.protocol,
         'mqtt',
     );
@@ -281,11 +277,6 @@ Scenario('Checking update template', async (I, Template) => {
     );
 
     Template.seeConfigTemplate(
-        Template.ConfigurationType.topic,
-        'topic',
-    );
-
-    Template.seeConfigTemplate(
         Template.ConfigurationType.protocol,
         'mqtt',
     );
@@ -318,7 +309,7 @@ Scenario('Removing template', async (I, Template) => {
     Template.removeAttr('attrIntegerDynamicChange', [
         Template.convertToObjectMetaToRemove('metaBoolChange'),
     ]);
-    Template.removeConfigTemplate(Template.ConfigurationType.topic);
+    Template.removeConfigTemplate(Template.ConfigurationType.protocol);
 
     Template.seeAttrHasRemoved('attrIntegerDynamicChange');
 

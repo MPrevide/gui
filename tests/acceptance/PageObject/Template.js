@@ -29,9 +29,6 @@ module.exports = {
 
     ConfigurationType: {
         protocol: 'Protocol',
-        topic: 'Topic',
-        translator: 'Translator',
-        device_timeout: 'Device Timeout',
     },
 
     init(i) {
