@@ -49,7 +49,7 @@ const DojotBtnClassic = ({ type = "secondary", color = 'none', title, onClick, l
 
 const DojotBtnClassicWithIcon = ({title, onClick, label, icon}) => {
     let auxTitle = title;
-    if (auxTitle == undefined)
+    if (auxTitle === undefined)
         auxTitle = label;
     return (
         <button type="button" title={auxTitle} onClick={onClick} className={`new-btn-flat style-2 secondary`}>

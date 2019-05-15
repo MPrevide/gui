@@ -119,8 +119,8 @@ module.exports = {
         this._clickOpenFooterBtnNew('New Attribute');
         this._fillAttrForm(fieldValue, attrType, attrValueType, value);
         this._metasArrayToAddUpdateRemove(metaDataArray);
-        within('.sidebar-attribute', () => {
-            I.click(this.ButtonLabel.add);
+        within('.sidebar-attribute .footer', () => {
+            I.click(locate('button').withAttr({ title: 'Add', id: 'btn-add-attr' }));
         });
     },
 

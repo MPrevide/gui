@@ -86,6 +86,7 @@ const SidebarAttribute = ({
                                             label={t('add.label')}
                                             type="primary"
                                             onClick={() => addTemplateAttr(selectAttr)}
+                                            id="btn-add-attr"
                                         />
                                     </Can>
                                 )

@@ -10,6 +10,12 @@ Scenario('Creating a template', async (I, Template) => {
     Template.clickCreateNew();
     Template.fillNameTemplate('1_NameOfTemplate');
 
+/*    Template.addAttr(
+        'attrStringActuator',
+        Template.AttributeType.actuator,
+        Template.AttributeValueType.string,
+    );*/
+
     Template.addConfigTemplate(
         Template.ConfigurationType.protocol,
         'mqtt',
@@ -87,11 +93,7 @@ Scenario('Creating a template', async (I, Template) => {
         '-22.826702502573774, -47.044628078647314',
     );
 
-/*    Template.addAttr(
-        'attrStringActuator',
-        Template.AttributeType.actuator,
-        Template.AttributeValueType.string,
-    );*/
+
 
     Template.updateAttr(
         'attrGPSStatic',
