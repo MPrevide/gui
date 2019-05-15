@@ -53,7 +53,9 @@
     "no_devices_shown": "No devices to be shown",
     "no_configured_devices": "No configured devices",
     "manage_firmware": "Manage Firmware",
-    "device_id": "Device ID"
+    "device_id": "Device ID",
+    "invalid_data": "Invalid data",
+    "no_data_received": "No data received",
+    "no_data_avaliable": "No data available"
 }
-
 

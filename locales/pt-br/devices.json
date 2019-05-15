@@ -41,7 +41,10 @@
     "no_devices_shown": "Nenhum dispositivo a ser mostrado",
     "no_configured_devices": "Nenhum dispositivo configurado",
     "manage_firmware": "Gerenciar Firmware",
-    "device_id": "Identificador do Dispositivo (ID)"
+    "device_id": "Identificador do Dispositivo (ID)",
+    "invalid_data": "Dado Inválido",
+    "no_data_received": "Nenhum dado recebido",
+    "no_data_avaliable": "Nenhum dado disponível"
 }
 
 

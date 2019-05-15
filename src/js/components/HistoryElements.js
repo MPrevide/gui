@@ -4,9 +4,11 @@ import {Line} from 'react-chartjs-2';
 import FirmwareHelper from '../comms/firmware/FirmwareHelper';
 import util from '../comms/util/util';
 import {SmallPositionRenderer} from "../views/utils/Maps";
+import { Trans, withNamespaces } from 'react-i18next';
 
 
 class Graph extends Component {
+
     render() {
         const labels = [];
         const values = [];
@@ -101,30 +103,45 @@ class Graph extends Component {
     }
 }
 
-
 function HistoryList(props) {
     // handle values
     const listValues = [];
+
+    //Get attribute type to compare with received value
+    const attrType = props.type === 'bool' ? 'boolean' : props.type ;
+
+
     for (const k in props.MeasureStore.data[props.device.id][`_${props.attr}`]) {
         listValues[k] = props.MeasureStore.data[props.device.id][`_${props.attr}`][k];
     }
     if (listValues.length > 0) {
         listValues.reverse();
+        
         return (
             <div className="relative full-height">
                 <div className="full-height full-width history-list">
-                    {listValues.map((i, k) => (<div className={`history-row ${k % 2 ? 'alt-row' : ''}`} key={i.ts}>
-                            {typeof i.value === "boolean" ?
-                                <div className="value">{i.value.toString()}</div> :
-                                <div className="value">
-                                    {i.value !== null && (i.value.length !== undefined && i.value.length > 0) ? i.value :
-                                        <span className="red-text">
-                                        <em>Invalid data </em>
-                                    </span>}
-                                </div>
-                            }
-                            <div className="label">{util.iso_to_date(i.ts)}</div>
-                        </div>
+                    {listValues.map((i, k) => (
+                        
+                    <div className={`history-row ${k % 2 ? 'alt-row' : ''}`} key={i.ts}>
+                        {
+                        ((typeof i.value === "boolean") && (attrType === typeof i.value)) ?
+                            <div className="value">{i.value.toString()}</div>
+                        :
+                            <div className="value">
+                                {
+                                ((attrType === typeof i.value) && (i.value !== null) && (i.value.length !== undefined) && (i.value.length > 0)) ?
+                                    `${i.value}`
+                                :
+                                    <span className="red-text">
+                                        <em><Trans i18nKey="devices:invalid_data"/></em>
+                                    </span>
+                                }
+                            </div>
+                        }
+                        
+                        <div className="label">{util.iso_to_date(i.ts)}</div>
+                    </div>
+
                     ))}
                 </div>
             </div>
@@ -276,7 +293,7 @@ function Attr(props) {
     function NoData() {
         return (
             <div className="mt60px full-height background-info">
-                <div className="full-width center">No data received</div>
+                <div className="full-width center"><Trans i18nKey="devices:no_data_received"/></div>
             </div>
         );
     }
@@ -284,7 +301,7 @@ function Attr(props) {
     function NoDataAv() {
         return (
             <div className="mt60px full-height background-info">
-                <div className="full-width center">No data available</div>
+                <div className="full-width center"><Trans i18nKey="devices:no_data_avaliable"/></div>
             </div>
         );
     }
