@@ -6,6 +6,7 @@ export default class TemplateTypes {
             { value: 'integer', label: 'Integer' },
             { value: 'string', label: 'String' },
             { value: 'boolean', label: 'Boolean' },
+            { value: 'object', label: 'Object' },
         ];
         this.availableTypes = [
             { value: 'dynamic', label: 'Dynamic Value' },

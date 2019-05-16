@@ -1,17 +1,17 @@
-import React, { Component, Fragment } from 'react';
+import React, {Component, Fragment} from 'react';
 import PropTypes from 'prop-types';
 import AltContainer from 'alt-container';
 import toaster from 'Comms/util/materialize';
 import TemplateActions from 'Actions/TemplateActions';
 import util from 'Comms/util/util';
-import { withNamespaces } from 'react-i18next';
+import {withNamespaces} from 'react-i18next';
 import ImageStore from 'Stores/ImageStore';
 import ability from 'Components/permissions/ability';
 import SidebarTemplate from './SidebarTemplate/index';
 import SidebarAttribute from './SidebarAttribute/index';
 import SidebarMetadata from './SidebarMetadata/index';
 import SidebarFirmConfig from './SidebarFirmware/SidebarFirmConfig';
-import { templateType, tempOpxType } from '../../TemplatePropTypes';
+import {templateType, tempOpxType} from '../../TemplatePropTypes';
 
 class Sidebar extends Component {
     static createAttribute() {
@@ -63,7 +63,7 @@ class Sidebar extends Component {
     }
 
     componentDidMount() {
-        const { template } = this.props;
+        const {template} = this.props;
         this.setState({
             template,
             metadata: {
@@ -88,7 +88,7 @@ class Sidebar extends Component {
     }
 
     toogleSidebarFirmware() {
-        const { showFirmware } = this.state;
+        const {showFirmware} = this.state;
         this.setState({
             showFirmware: !showFirmware,
         });
@@ -96,7 +96,7 @@ class Sidebar extends Component {
 
 
     toogleSidebarAttribute(attrType, attr = Sidebar.createAttribute()) {
-        const { showAttribute } = this.state;
+        const {showAttribute} = this.state;
         this.setState({
             showAttribute: !showAttribute,
             showMetadata: false,
@@ -109,7 +109,7 @@ class Sidebar extends Component {
     }
 
     toogleSidebarMetadata(metadata) {
-        const { showMetadata } = this.state;
+        const {showMetadata} = this.state;
         if (metadata) {
             const immutableMeta = JSON.parse(JSON.stringify(metadata));
             this.setState({
@@ -130,7 +130,7 @@ class Sidebar extends Component {
     }
 
     changeValue(field, event) {
-        const { template } = this.state;
+        const {template} = this.state;
         template[field] = event.target.value;
         this.setState({
             template,
@@ -138,7 +138,12 @@ class Sidebar extends Component {
     }
 
     changeAttrValue(event, attr) {
-        const values = { ...attr };
+        if (event.hasOwnProperty("SyntheticEvent")){
+            event.persist();
+            console.log('changeAttrValue hasOwnProperty, SyntheticEvent');
+        }
+        console.log('changeAttrValue event, attr', event, attr);
+        const values = {...attr};
         values[event.target.name] = event.target.value;
         this.setState({
             selectAttr: values,
@@ -148,8 +153,8 @@ class Sidebar extends Component {
     updateTemplateAttr(attrs) {
         if (!this.validateAttrs(attrs)) return;
 
-        const { template } = this.state;
-        const [type, values] = [attrs.attrType, { ...attrs }];
+        const {template} = this.state;
+        const [type, values] = [attrs.attrType, {...attrs}];
 
         if (type === 'config_attrs') {
             values.value_type = 'string';
@@ -174,8 +179,8 @@ class Sidebar extends Component {
     addTemplateAttr(attrs) {
         if (!this.validateAttrs(attrs)) return;
 
-        const { template } = this.state;
-        const [type, values] = [attrs.attrType, { ...attrs }];
+        const {template} = this.state;
+        const [type, values] = [attrs.attrType, {...attrs}];
 
         if (type === 'config_attrs') {
             values.value_type = 'string';
@@ -193,9 +198,9 @@ class Sidebar extends Component {
     }
 
     validateAttrs(attrs) {
-        const { template } = this.state;
-        const [type, values] = [attrs.attrType, { ...attrs }];
-        const { t } = this.props;
+        const {template} = this.state;
+        const [type, values] = [attrs.attrType, {...attrs}];
+        const {t} = this.props;
         const ret = util.isLabelValid(values.label);
         if (!ret.result) {
             if (type === 'config_attrs') {
@@ -212,7 +217,7 @@ class Sidebar extends Component {
         );
 
         if (existName) {
-            toaster.warning(t('templates:alerts.label_already_exist', { label: values.label }));
+            toaster.warning(t('templates:alerts.label_already_exist', {label: values.label}));
             return false;
         }
 
@@ -226,7 +231,7 @@ class Sidebar extends Component {
             }
 
             if (template[type].some(item => item.label === values.label && values.id !== item.id)) {
-                toaster.warning(t('templates:alerts.conf_already_exist', { label: values.label }));
+                toaster.warning(t('templates:alerts.conf_already_exist', {label: values.label}));
                 return false;
             }
         }
@@ -246,8 +251,8 @@ class Sidebar extends Component {
     }
 
     saveTemplate() {
-        const { toogleSidebar, temp_opex, t } = this.props;
-        const { template } = this.state;
+        const {toogleSidebar, temp_opex, t} = this.props;
+        const {template} = this.state;
         const ret = util.isNameValid(template.label);
         if (!ret.result) {
             toaster.error(ret.error);
@@ -267,8 +272,8 @@ class Sidebar extends Component {
     }
 
     updateTemplate() {
-        const { template } = this.state;
-        const { toogleSidebar, temp_opex, t } = this.props;
+        const {template} = this.state;
+        const {toogleSidebar, temp_opex, t} = this.props;
 
         // Verify template name
         const ret = util.isNameValid(template.label);
@@ -280,7 +285,9 @@ class Sidebar extends Component {
         template.attrs = [];
         template.attrs.push(...template.data_attrs);
         template.attrs.push(...template.config_attrs);
-        if (template.img_attrs) { template.attrs.push(...template.img_attrs); }
+        if (template.img_attrs) {
+            template.attrs.push(...template.img_attrs);
+        }
         template.attrs = this.removeIds(template.attrs);
         TemplateActions.triggerUpdate(template, () => {
             toaster.success(t('templates:alerts.update'));
@@ -290,12 +297,12 @@ class Sidebar extends Component {
     }
 
     addMetadata() {
-        const { metadata, selectAttr, showMetadata } = this.state;
+        const {metadata, selectAttr, showMetadata} = this.state;
         if (!this.validateMetadata(metadata)) return;
 
         if (!Object.prototype.hasOwnProperty.call(selectAttr, 'metadata')) selectAttr.metadata = [];
 
-        selectAttr.metadata.push({ ...metadata });
+        selectAttr.metadata.push({...metadata});
         this.setState({
             showMetadata: !showMetadata,
             selectAttr,
@@ -303,9 +310,11 @@ class Sidebar extends Component {
     }
 
     updateMetadata(originalMetadata) {
-        const { selectAttr, showMetadata } = this.state;
-        let { metadata } = this.state;
-        if (originalMetadata) { metadata = originalMetadata; }
+        const {selectAttr, showMetadata} = this.state;
+        let {metadata} = this.state;
+        if (originalMetadata) {
+            metadata = originalMetadata;
+        }
         if (!Object.prototype.hasOwnProperty.call(selectAttr, 'metadata')) selectAttr.metadata = [];
         if (!this.validateMetadata(metadata)) return;
 
@@ -321,8 +330,8 @@ class Sidebar extends Component {
     }
 
     validateMetadata(metadata) {
-        const { selectAttr } = this.state;
-        const { t } = this.props;
+        const {selectAttr} = this.state;
+        const {t} = this.props;
         if (!Object.prototype.hasOwnProperty.call(selectAttr, 'metadata')) selectAttr.metadata = [];
         const resp = util.isLabelValid(metadata.label);
         if (!resp.result) {
@@ -334,7 +343,7 @@ class Sidebar extends Component {
             item => item.label === metadata.label && item.id !== metadata.id,
         );
         if (existName) {
-            toaster.warning(t('templates:alerts.conf_already_exist', { label: metadata.label }));
+            toaster.warning(t('templates:alerts.conf_already_exist', {label: metadata.label}));
             return false;
         }
 
@@ -364,15 +373,15 @@ class Sidebar extends Component {
     }
 
     handleChangeMetadata(e) {
-        const { metadata } = this.state;
-        const { value, name } = e.target;
+        const {metadata} = this.state;
+        const {value, name} = e.target;
         metadata[name] = value;
-        this.setState({ metadata });
+        this.setState({metadata});
     }
 
     deleteTemplate() {
-        const { template } = this.state;
-        const { temp_opex, toogleSidebar, t } = this.props;
+        const {template} = this.state;
+        const {temp_opex, toogleSidebar, t} = this.props;
         TemplateActions.triggerRemoval(template.id, () => {
             toaster.success(t('templates:alerts.remove'));
             this.toogleSidebarDelete();
@@ -383,12 +392,12 @@ class Sidebar extends Component {
 
     toogleSidebarDelete(sidebar) {
         this.setState(prevState => (
-            { [sidebar]: !prevState[sidebar] }
+            {[sidebar]: !prevState[sidebar]}
         ));
     }
 
     removeSelectAttr() {
-        const { template, selectAttr } = this.state;
+        const {template, selectAttr} = this.state;
         template[selectAttr.attrType] = template[selectAttr.attrType].filter(
             item => item.id !== selectAttr.id,
         );
@@ -400,7 +409,7 @@ class Sidebar extends Component {
     }
 
     removeSelectMeta() {
-        const { selectAttr, metadata } = this.state;
+        const {selectAttr, metadata} = this.state;
         selectAttr.metadata = selectAttr.metadata.filter(item => item.id !== metadata.id);
         this.toogleSidebarDelete('showDeleteMeta');
         this.toogleSidebarMetadata();
@@ -411,7 +420,7 @@ class Sidebar extends Component {
 
     removeIds(arr) {
         return arr.map((item) => {
-            const newItem = { ...item };
+            const newItem = {...item};
             delete newItem.id;
             if (Object.prototype.hasOwnProperty.call(newItem, 'metadata')) {
                 newItem.metadata = this.removeIds(newItem.metadata);
@@ -421,7 +430,7 @@ class Sidebar extends Component {
     }
 
     render() {
-        const { showSidebar, toogleSidebar, isNewTemplate } = this.props;
+        const {showSidebar, toogleSidebar, isNewTemplate} = this.props;
         const {
             showAttribute,
             showMetadata,
