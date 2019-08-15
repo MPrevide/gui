@@ -17,7 +17,6 @@ class CertificatesManager {
         };
         return util.POST(`${this.baseUrl}/sign/${commonName}/pkcs10`, req);
     }
-    
 }
 
 const certificatesManager = new CertificatesManager();
